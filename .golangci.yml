@@ -1,0 +1,84 @@
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  disable-all: true
+  fast: false
+  enable:
+    - bodyclose
+    - dogsled
+    - durationcheck
+    - errcheck
+    - exportloopref
+    - govet
+    - gosimple
+    - gofmt
+    - gofumpt
+    - goconst
+    - goimports
+    - gomnd
+    - gocyclo
+    - ineffassign
+    - lll
+    - prealloc
+    - revive
+    - staticcheck
+    - typecheck
+    - unused
+    - whitespace
+    - unconvert
+
+  # don't enable:
+  # - asciicheck
+  # - deadcode
+  # - scopelint
+  # - structcheck
+  # - gochecknoglobals
+  # - gocognit
+  # - godot
+  # - godox
+  # - goerr113
+  # - interfacer
+  # - maligned
+  # - nestif
+  # - prealloc
+  # - testpackage
+  # - stylrcheck
+  # - varcheck
+  # - wastedassign
+  # - wsl
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  whitespace:
+    multi-func: true
+  lll:
+    line-length: 160
+  gomnd:
+    checks:
+      - case
+      - condition
+      - return
+  goconst:
+    ignore-tests: true
+  gocyclo:
+    min-complexity: 50
+
+issues:
+  exclude:
+    - Id
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - lll
+    - path: generate.go
+      linters:
+        - gofmt
+        - lll
+    - path: pkg/sessions/sessions.go
+      linters:
+        - gomnd
+        - revive
