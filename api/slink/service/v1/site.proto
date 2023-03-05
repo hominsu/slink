@@ -10,12 +10,12 @@ option go_package = "github.com/hominsu/slink/api/slink/service/v1;v1";
 option java_multiple_files = true;
 option (gnostic.openapi.v3.document) = {
   info: {
-    title: "pallas";
-    description: "docs for pallas apis";
+    title: "slink";
+    description: "docs for slink apis";
     version: "1.0";
     contact: {
       name: "hominsu";
-      url: "https://github.com/hominsu/pallas";
+      url: "https://github.com/hominsu/slink";
       email: "hominsu@foxmail.com";
     };
   };
@@ -27,8 +27,16 @@ service SiteService {
 
     option (gnostic.openapi.v3.operation) = {description: "return the version of backend"};
   }
+
+  rpc Count(google.protobuf.Empty) returns (CountReply) {
+    option (google.api.http) = {get: "/v1/site/slink/count"};
+  }
 }
 
 message PingReply {
   string version = 1;
+}
+
+message CountReply {
+  uint64 count = 1;
 }

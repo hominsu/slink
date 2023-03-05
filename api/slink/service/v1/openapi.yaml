@@ -3,35 +3,14 @@
 
 openapi: 3.0.3
 info:
-    title: pallas
-    description: docs for pallas apis
+    title: slink
+    description: docs for slink apis
     contact:
         name: hominsu
-        url: https://github.com/hominsu/pallas
+        url: https://github.com/hominsu/slink
         email: hominsu@foxmail.com
     version: "1.0"
 paths:
-    /s/{key}:
-        get:
-            tags:
-                - ShortLinkService
-            operationId: ShortLinkService_Redirect
-            parameters:
-                - name: key
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content: {}
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
     /v1/admin/flush:
         delete:
             tags:
@@ -139,6 +118,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /v1/site/slink/count:
+        get:
+            tags:
+                - SiteService
+            operationId: SiteService_Count
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CountReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/slinks:
         post:
             tags:
@@ -165,6 +162,12 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
+        CountReply:
+            type: object
+            properties:
+                count:
+                    type: integer
+                    format: uint64
         CreateShortLinkReply:
             type: object
             properties:
