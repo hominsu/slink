@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package slink.service.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/hominsu/slink/api/slink/service/v1;v1";
+option java_multiple_files = true;
+
+service ShortLinkService {
+  rpc CreateShortLink(CreateShortLinkRequest) returns (CreateShortLinkReply) {
+    option (google.api.http) = {
+      post: "/v1/slinks",
+      body: "*",
+    };
+  }
+}
+
+message CreateShortLinkRequest {
+  string link = 1 [(validate.rules).string.uri = true];
+}
+
+message CreateShortLinkReply {
+  string key = 1;
+}

@@ -1,0 +1,25 @@
+version: v1
+managed:
+  enabled: false
+plugins:
+  - plugin: buf.build/protocolbuffers/go
+    out: api
+    opt: paths=source_relative
+
+  - plugin: buf.build/grpc/go
+    out: api
+    opt: paths=source_relative
+
+  # generate rest service code
+  - name: go-http
+    out: api
+    opt: paths=source_relative
+
+  # generate kratos errors code
+  - name: go-errors
+    out: api
+    opt: paths=source_relative
+
+  - plugin: buf.build/bufbuild/validate-go
+    out: api
+    opt: paths=source_relative

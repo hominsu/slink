@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package slink.service.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/hominsu/slink/api/slink/service/v1;v1";
+option java_multiple_files = true;
+
+service AdminService {
+  rpc FlushShortLink(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/admin/flush"};
+  }
+
+  rpc ListShortLinks(ListShortLinkRequest) returns (ListShortLinkReply) {
+    option (google.api.http) = {get: "/v1/admin/slinks"};
+  }
+
+  rpc DeleteShortLink(DeleteShortLinkRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/admin/slinks/{key}"};
+  }
+}
+
+message ListShortLinkRequest {
+  int32 page_size = 1 [(validate.rules).int32 = {gt: 0}];
+  string page_token = 2;
+}
+
+message ListShortLinkReply {
+  repeated string keys = 1;
+  string next_page_token = 2;
+}
+
+message DeleteShortLinkRequest {
+  string key = 1;
+}

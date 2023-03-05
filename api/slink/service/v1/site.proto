@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package slink.service.v1;
+
+import "gnostic/openapi/v3/annotations.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/hominsu/slink/api/slink/service/v1;v1";
+option java_multiple_files = true;
+option (gnostic.openapi.v3.document) = {
+  info: {
+    title: "pallas";
+    description: "docs for pallas apis";
+    version: "1.0";
+    contact: {
+      name: "hominsu";
+      url: "https://github.com/hominsu/pallas";
+      email: "hominsu@foxmail.com";
+    };
+  };
+};
+
+service SiteService {
+  rpc Ping(google.protobuf.Empty) returns (PingReply) {
+    option (google.api.http) = {get: "/v1/site/ping"};
+
+    option (gnostic.openapi.v3.operation) = {description: "return the version of backend"};
+  }
+}
+
+message PingReply {
+  string version = 1;
+}
