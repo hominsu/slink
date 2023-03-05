@@ -33,5 +33,5 @@ target "slink-service" {
     notequal("", VERSION) ? "${REPO}/slink:${VERSION}" : "",
     "${REPO}/slink:latest",
   ]
-  platforms = ["linux/amd64", "linux/arm64", "linux/arm"]
+  platforms = ["linux/amd64", "linux/arm64"]
 }

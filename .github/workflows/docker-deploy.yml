@@ -5,7 +5,7 @@ on:
     tags: [ 'v*.*.*' ]
 
 jobs:
-  resolve-registry:
+  set-matrix:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -13,11 +13,11 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2.4.0
 
       - id: set-matrix
         run: |
-          JSON=$(cat .github/workflows/registry.json | tr '\n' ' ' | sed 's/ //g')
+          JSON=$(cat .github/workflows/repo-setting.json | tr '\n' ' ' | sed 's/ //g')
           echo "::set-output name=matrix::$JSON"
 
       - id: git_info
@@ -27,16 +27,16 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
-    needs: resolve-registry
-    environment:
-      name: production_environment
+    needs: [ set-matrix ]
     strategy:
-      matrix: ${{fromJSON(needs.resolve-registry.outputs.matrix)}}
+      matrix: ${{fromJSON(needs.set-matrix.outputs.matrix)}}
+
     env:
       id: ${{ secrets[matrix.id] }}
       token: ${{ secrets[matrix.token] }}
+
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -61,8 +61,8 @@ jobs:
           install: true
 
       - name: Build and Push ${{ matrix.name }}
-        run:
-          REPO=${{ matrix.push_link }} VERSION=${{ needs.resolve-registry.outputs.git_tag }} docker buildx bake --file deploy/docker-bake.hcl --push
+        run: |
+          REPO=${{ matrix.push_link }} VERSION=${{ needs.set-matrix.outputs.git_tag }} docker buildx bake --file deploy/docker-bake.hcl --push
 
   release:
     runs-on: ubuntu-latest
