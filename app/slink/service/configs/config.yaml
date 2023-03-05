@@ -1,0 +1,18 @@
+server:
+  http:
+    addr: 0.0.0.0:8000
+    timeout: 60s
+data:
+  database:
+    driver: sqlite3
+    source: file:ent?mode=memory&cache=shared&_fk=1
+  cuckoo:
+    capacity: 1000000
+    retry: 3
+secret:
+  admin:
+    username: admin
+    password: password
+  jwt:
+    secret: he1l0
+    expired_time: 86400s

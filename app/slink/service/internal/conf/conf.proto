@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package slink.service.internal.conf;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "slink/service/internal/conf;conf";
+
+message Bootstrap {
+  Server server = 1;
+  Data data = 2;
+  Secret secret = 3;
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  HTTP http = 1;
+}
+
+message Data {
+  message Database {
+    string driver = 1;
+    string source = 2;
+  }
+  message Cuckoo {
+    uint64 capacity = 1;
+    uint64 retry = 2;
+  }
+  Database database = 1;
+  Cuckoo cuckoo = 2;
+}
+
+message Secret {
+  message Admin {
+    string username = 1;
+    string password = 2;
+  }
+  message Jwt {
+    string secret = 1;
+    google.protobuf.Duration expired_time = 2;
+  }
+  Admin admin = 1;
+  Jwt jwt = 2;
+}
