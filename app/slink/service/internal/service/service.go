@@ -21,12 +21,14 @@ var ProviderSet = wire.NewSet(
 type SiteService struct {
 	v1.UnimplementedSiteServiceServer
 
+	su      *biz.ShortLinkRepoUsecase
 	log     *log.Helper
 	version string
 }
 
-func NewSiteService(logger log.Logger, version string) *SiteService {
+func NewSiteService(su *biz.ShortLinkRepoUsecase, logger log.Logger, version string) *SiteService {
 	return &SiteService{
+		su:      su,
 		log:     log.NewHelper(log.With(logger, "module", "service/site")),
 		version: version,
 	}

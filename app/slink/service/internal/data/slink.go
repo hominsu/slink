@@ -177,6 +177,19 @@ func (r *shortLinkRepo) Flush(ctx context.Context) error {
 	}
 }
 
+func (r *shortLinkRepo) Count(ctx context.Context) (int, error) {
+	count, err := r.data.db.ShortLink.Query().
+		Count(ctx)
+	switch {
+	case err == nil:
+		return count, nil
+	case ent.IsNotFound(err):
+		return 0, v1.ErrorNotFound("short link not found: %v", err)
+	default:
+		return 0, v1.ErrorUnknown("unknown error: %v", err)
+	}
+}
+
 func (r *shortLinkRepo) createBuilder(s *biz.ShortLink) *ent.ShortLinkCreate {
 	m := r.data.db.ShortLink.Create()
 	m.SetKey(s.Key)

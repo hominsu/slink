@@ -99,6 +99,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /v1/site/count:
+        get:
+            tags:
+                - SiteService
+            operationId: SiteService_Count
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CountReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/site/ping:
         get:
             tags:
@@ -112,24 +130,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PingReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /v1/site/slink/count:
-        get:
-            tags:
-                - SiteService
-            operationId: SiteService_Count
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/CountReply'
                 default:
                     description: Default error response
                     content:

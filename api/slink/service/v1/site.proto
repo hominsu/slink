@@ -29,7 +29,7 @@ service SiteService {
   }
 
   rpc Count(google.protobuf.Empty) returns (CountReply) {
-    option (google.api.http) = {get: "/v1/site/slink/count"};
+    option (google.api.http) = {get: "/v1/site/count"};
   }
 }
 

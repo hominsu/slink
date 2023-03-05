@@ -30,6 +30,7 @@ type ShortLinkRepo interface {
 	DeleteByKey(ctx context.Context, key string) error
 	List(ctx context.Context, pageSize int, pageToken string) (*ShortLinkPage, error)
 	Flush(ctx context.Context) error
+	Count(ctx context.Context) (int, error)
 }
 
 type ShortLinkRepoUsecase struct {
@@ -109,4 +110,8 @@ func (uc *ShortLinkRepoUsecase) List(ctx context.Context, pageSize int, pageToke
 func (uc *ShortLinkRepoUsecase) Flush(ctx context.Context) error {
 	uc.filter.Reset()
 	return uc.sr.Flush(ctx)
+}
+
+func (uc *ShortLinkRepoUsecase) Count(ctx context.Context) (int, error) {
+	return uc.sr.Count(ctx)
 }
