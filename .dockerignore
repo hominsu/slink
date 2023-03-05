@@ -37,3 +37,12 @@ app/**/internal/data/ent
 !app/**/internal/data/ent/schema
 !app/**/internal/data/ent/external.go
 !app/**/internal/data/ent/generate.go
+
+# Build
+web/dist
+web/lib
+web/lib-types
+web/server
+
+# Development
+web/node_modules
