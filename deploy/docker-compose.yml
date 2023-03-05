@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  slink:
+    image: hominsu/slink:latest
+    container_name: slink
+    restart: always
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - "../app/slink/service/configs:/data/conf"
+    ports:
+      - "8000:8000"
+    networks:
+      net:
+        aliases:
+          - slink
+
+networks:
+  net:
+    driver: bridge

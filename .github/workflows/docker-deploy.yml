@@ -62,7 +62,7 @@ jobs:
 
       - name: Build and Push ${{ matrix.name }}
         run:
-          REPO=${{ matrix.push_link }} VERSION=${{ needs.resolve-registry.outputs.git_tag }} docker buildx bake --file deploy/docker-compose/docker-bake.hcl --push
+          REPO=${{ matrix.push_link }} VERSION=${{ needs.resolve-registry.outputs.git_tag }} docker buildx bake --file deploy/docker-bake.hcl --push
 
   release:
     runs-on: ubuntu-latest
