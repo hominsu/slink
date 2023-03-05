@@ -13,6 +13,9 @@ jobs:
   build:
     name: build & test
     runs-on: ubuntu-latest
+    container:
+      image: golang:alpine
+      options: --user root
     steps:
       - name: Install dependencies
         run: |
