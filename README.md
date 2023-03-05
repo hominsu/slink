@@ -20,7 +20,7 @@
     <a href="https://github.com/hominsu/slink"><strong>Explore the docs »</strong></a>
     <br/>
     <br/>
-    <a href="https://github.com/hominsu/slink">View Demo</a>
+    <a href="https://slink.hauhau.cn">View Demo</a>
     ·
     <a href="https://github.com/hominsu/slink/issues">Report Bug</a>
     ·
