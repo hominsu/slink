@@ -8,7 +8,7 @@ export const AllLocale = [
     currency: "CNY",
     timeZone: "Asia/Shanghai",
     units: {
-      svg: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.0/svg/1f1ec-1f1e7.svg",
+      svg: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.0/svg/1f1e8-1f1f3.svg",
       name: "简体中文",
     },
   },
@@ -17,7 +17,7 @@ export const AllLocale = [
     currency: "USD",
     timeZone: "America/Los_Angeles",
     units: {
-      svg: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.0/svg/1f1e8-1f1f3.svg",
+      svg: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.0/svg/1f1ec-1f1e7.svg",
       name: "English",
     },
   },

@@ -2,7 +2,7 @@ import { component$, useStylesScoped$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { Alter } from "~/components/alter/alter";
 import { UrlInput } from "~/routes/urlInput";
-import { InputStore } from "../store";
+import { InputStore } from "~/store";
 import indexCss from "./index.css?inline";
 import { Result } from "~/routes/result";
 import { Slogan } from "~/routes/Slogan";

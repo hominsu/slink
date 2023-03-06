@@ -1,7 +1,7 @@
 import { component$, useContext } from "@builder.io/qwik";
 import type { IAlterContext, ILinkContext } from "~/store";
 import { AlterContext, handleShort, LinkContext } from "~/store";
-import { clearState } from "../store";
+import { clearState } from "~/store";
 
 import type { SpeakLocale } from "qwik-speak";
 import { $translate as t, Speak, useSpeakLocale } from "qwik-speak";

@@ -11,7 +11,7 @@ import {
   useTask$,
 } from "@builder.io/qwik";
 import { AlterContext } from "~/store";
-import type { IAlterContext } from "../../store";
+import type { IAlterContext } from "~/store";
 
 import { $translate as t, Speak } from "qwik-speak";
 
