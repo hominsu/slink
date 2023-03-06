@@ -49,7 +49,7 @@ export const UrlInput = component$(() => {
           }}
           type="text"
           placeholder={t("short.inputPlaceholder@@输入令人讨厌的长链接~")}
-          class="input min-w-[500px] text-lg"
+          class="input min-w-[330px] text-lg"
         />
 
         <button

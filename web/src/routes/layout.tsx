@@ -8,7 +8,7 @@ export default component$(() => {
         <Header />
         <section
           style={{
-            minHeight: "500px",
+            minHeight: "550px",
           }}
         >
           <Slot />

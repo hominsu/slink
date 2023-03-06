@@ -12,7 +12,7 @@ export default component$(() => {
   return (
     <div class="w-full">
       <Slogan
-        class={`flex justify-center w-full mt-[140px] mb-4 opacity-100`}
+        class={`flex justify-center w-full mt-[16px] mb-4 opacity-100`}
       ></Slogan>
       <InputStore>
         <Alter />
