@@ -40,7 +40,7 @@ type ShortLinkRepoUsecase struct {
 	retry  int
 }
 
-func NewShortLinkRepoUsecase(sr ShortLinkRepo, conf *conf.Data, logger log.Logger) *ShortLinkRepoUsecase {
+func NewShortLinkRepoUsecase(sr ShortLinkRepo, filter *cuckoo.Filter, conf *conf.Data, logger log.Logger) *ShortLinkRepoUsecase {
 	helper := log.NewHelper(log.With(logger, "module", "biz/slink"))
 	if conf.Cuckoo.Retry == 0 {
 		helper.Fatalf("retry num should be greater than zero")
@@ -48,7 +48,7 @@ func NewShortLinkRepoUsecase(sr ShortLinkRepo, conf *conf.Data, logger log.Logge
 
 	return &ShortLinkRepoUsecase{
 		sr:     sr,
-		filter: cuckoo.NewFilter(uint(conf.Cuckoo.Capacity)),
+		filter: filter,
 		log:    log.NewHelper(logger),
 		retry:  int(conf.Cuckoo.Retry),
 	}

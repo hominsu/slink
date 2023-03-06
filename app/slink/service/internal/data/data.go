@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	cuckoo "github.com/seiflotfy/cuckoofilter"
 
 	"github.com/hominsu/slink/app/slink/service/internal/conf"
 	"github.com/hominsu/slink/app/slink/service/internal/data/ent"
@@ -18,7 +19,9 @@ import (
 var ProviderSet = wire.NewSet(
 	NewData,
 	NewEntClient,
+	NewCuckooFilter,
 	NewShortLinkRepo,
+	Migration,
 )
 
 type Data struct {
@@ -31,6 +34,7 @@ func NewData(
 	entClient *ent.Client,
 	conf *conf.Data,
 	logger log.Logger,
+	_ *MigrationStatus,
 ) (*Data, func(), error) {
 	// NewData
 	helper := log.NewHelper(log.With(logger, "module", "data"))
@@ -65,4 +69,8 @@ func NewEntClient(conf *conf.Data, logger log.Logger) *ent.Client {
 		helper.Fatalf("failed creating schema resources: %v", err)
 	}
 	return client
+}
+
+func NewCuckooFilter(conf *conf.Data) *cuckoo.Filter {
+	return cuckoo.NewFilter(uint(conf.Cuckoo.Capacity))
 }
