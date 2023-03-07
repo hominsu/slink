@@ -108,8 +108,12 @@ func (uc *ShortLinkRepoUsecase) List(ctx context.Context, pageSize int, pageToke
 }
 
 func (uc *ShortLinkRepoUsecase) Flush(ctx context.Context) error {
+	err := uc.sr.Flush(ctx)
+	if err != nil {
+		return err
+	}
 	uc.filter.Reset()
-	return uc.sr.Flush(ctx)
+	return nil
 }
 
 func (uc *ShortLinkRepoUsecase) Count(ctx context.Context) (int, error) {

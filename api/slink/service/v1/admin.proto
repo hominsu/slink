@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package slink.service.v1;
 
+import "gnostic/openapi/v3/annotations.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "validate/validate.proto";
@@ -12,14 +13,44 @@ option java_multiple_files = true;
 service AdminService {
   rpc FlushShortLink(google.protobuf.Empty) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/v1/admin/flush"};
+    option (gnostic.openapi.v3.operation) = {
+      security: {
+        additional_properties: [
+          {
+            name: "Bearer";
+            value: {};
+          }
+        ];
+      };
+    };
   }
 
   rpc ListShortLinks(ListShortLinkRequest) returns (ListShortLinkReply) {
     option (google.api.http) = {get: "/v1/admin/slinks"};
+    option (gnostic.openapi.v3.operation) = {
+      security: {
+        additional_properties: [
+          {
+            name: "Bearer";
+            value: {};
+          }
+        ];
+      };
+    };
   }
 
   rpc DeleteShortLink(DeleteShortLinkRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/v1/admin/slinks/{key}"};
+    option (gnostic.openapi.v3.operation) = {
+      security: {
+        additional_properties: [
+          {
+            name: "Bearer";
+            value: {};
+          }
+        ];
+      };
+    };
   }
 }
 

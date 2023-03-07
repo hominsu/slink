@@ -18,18 +18,142 @@ option (gnostic.openapi.v3.document) = {
       url: "https://github.com/hominsu/slink";
       email: "hominsu@foxmail.com";
     };
+    license: {
+      name: "MIT";
+      url: "https://github.com/hominsu/slink/blob/main/LICENSE";
+    };
+  };
+  servers: [
+    {
+      url: "http://localhost:8000";
+      description: "Development server";
+    },
+    {
+      url: "https://sl.hauhau.cn";
+      description: "Production server";
+    }
+  ];
+  paths: {
+    path: [
+      {
+        name: "/s/{key}";
+        value: {
+          get: {
+            tags: ["ShortLinkRedirectService"];
+            operation_id: "ShortLinkRedirectService_CreateShortLink";
+            parameters: [
+              {
+                parameter: {
+                  name: "key";
+                  in: "path";
+                  required: true;
+                  schema: {
+                    schema: {type: "string"};
+                  };
+                };
+              }
+            ];
+            responses: {
+              response_or_reference: [
+                {
+                  name: "301";
+                  value: {
+                    response: {
+                      description: "OK";
+                      headers: {
+                        additional_properties: [
+                          {
+                            name: "Location";
+                            value: {
+                              header: {
+                                schema: {
+                                  schema: {type: "string"};
+                                };
+                              };
+                            };
+                          }
+                        ];
+                      };
+                      content: {
+                        additional_properties: [
+                          {
+                            name: "text/html";
+                            value: {
+                              schema: {
+                                schema: {
+                                  type: "string";
+                                  pattern: "<a href=\"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?\">Moved Permanently</a>.";
+                                  example: {yaml: "<a href=\"https://github.com/hominsu/slink\">Moved Permanently</a>."};
+                                };
+                              };
+                            };
+                          }
+                        ];
+                      };
+                    };
+                  };
+                }
+              ];
+              default: {
+                response: {
+                  description: "Default error response";
+                  content: {
+                    additional_properties: [
+                      {
+                        name: "application/json";
+                        value: {
+                          schema: {
+                            reference: {_ref: "#/components/schemas/Status"};
+                          };
+                        };
+                      }
+                    ]
+                  };
+                };
+              };
+            };
+          };
+        };
+      }
+    ];
+  }
+  components: {
+    security_schemes: {
+      additional_properties: [
+        {
+          name: "Bearer"
+          value: {
+            security_scheme: {
+              type: "apiKey";
+              name: "Authorization";
+              in: "header";
+              description: "Enter the token with the `Bearer: ` prefix, e.g. \"Bearer abcde12345.\"";
+            };
+          };
+        }
+      ];
+    };
   };
 };
 
 service SiteService {
   rpc Ping(google.protobuf.Empty) returns (PingReply) {
     option (google.api.http) = {get: "/v1/site/ping"};
-
     option (gnostic.openapi.v3.operation) = {description: "return the version of backend"};
   }
 
   rpc Count(google.protobuf.Empty) returns (CountReply) {
     option (google.api.http) = {get: "/v1/site/count"};
+    option (gnostic.openapi.v3.operation) = {
+      security: {
+        additional_properties: [
+          {
+            name: "Bearer";
+            value: {};
+          }
+        ];
+      };
+    };
   }
 }
 

@@ -28,7 +28,7 @@ func (UnimplementedShortLinkRedirectServiceServer) mustEmbedUnimplementedShortLi
 }
 
 // UnsafeShortLinkRedirectServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ShortLinkServiceServer will
+// Use of this interface is not recommended, as added methods to ShortLinkRedirectServiceServer will
 // result in compilation errors.
 type UnsafeShortLinkRedirectServiceServer interface {
 	mustEmbedUnimplementedShortLinkRedirectServiceServer()
