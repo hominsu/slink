@@ -1,48 +1,47 @@
-### Go template
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
-# Test binary, built with `go test -c`
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
-# Dependency directories (remove the comment below to include it)
-# vendor/
-
-.idea
-.vscode
-.github
+**/.idea
+**/.vscode
 **/cert
 **/bin
-*.rdb
-cmake-build-*/
-build/
-deploy
 
 **/.DS_Store
 
-api/**/*.pb.go
-api/**/*.validate.go
+go.work
+go.work.sum
 
-app/**/conf/*.pb.go
-app/**/cmd/server/wire_gen.go
+# dependencies
+/**/node_modules
+/**/.pnp
+/**.pnp.js
+/**/.yarn/*
+!/**/.yarn/releases
+!/**/.yarn/plugins
+!/**/.yarn/sdks
 
-app/**/internal/data/ent
-!app/**/internal/data/ent/schema
-!app/**/internal/data/ent/external.go
-!app/**/internal/data/ent/generate.go
+# testing
+**/coverage
 
-# Build
-web/dist
-web/lib
-web/lib-types
-web/server
+# next.js
+**/.next/
+**/out/
 
-# Development
-web/node_modules
+# production
+**/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+**/.vercel
+
+# typescript
+**/*.tsbuildinfo
+next-env.d.ts
