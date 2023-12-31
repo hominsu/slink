@@ -65,9 +65,8 @@ jobs:
         run: >
           REPO=${{ matrix.registry.push_link }}
           VERSION=${{ needs.set-matrix.outputs.git_tag }}
-          REDIRECT_URL=${{ secrets.REDIRECT_URL }}
-          GRPC_ENDPOINT=${{ secrets.GRPC_ENDPOINT }}
-          docker buildx bake --file docker-bake.hcl --push
+          NEXT_PUBLIC_REDIRECT_URL=${{ secrets.NEXT_PUBLIC_REDIRECT_URL }}
+          docker buildx bake --file deploy/docker-bake.hcl --push
 
   release:
     runs-on: ubuntu-latest
