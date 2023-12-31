@@ -11,8 +11,8 @@ var (
 	// ShortLinksColumns holds the columns for the "short_links" table.
 	ShortLinksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "created_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "updated_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "key", Type: field.TypeString, Unique: true},
 		{Name: "link", Type: field.TypeString, Unique: true},
 	}
