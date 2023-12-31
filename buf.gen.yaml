@@ -10,12 +10,10 @@ plugins:
     out: api
     opt: paths=source_relative
 
-  # generate rest service code
   - name: go-http
     out: api
     opt: paths=source_relative
 
-  # generate kratos errors code
   - name: go-errors
     out: api
     opt: paths=source_relative
@@ -23,3 +21,11 @@ plugins:
   - plugin: buf.build/bufbuild/validate-go
     out: api
     opt: paths=source_relative
+
+  - plugin: buf.build/bufbuild/es
+    out: web/lib/api
+    opt: target=js+dts
+
+  - plugin: buf.build/connectrpc/es
+    out: web/lib/api
+    opt: target=js+dts

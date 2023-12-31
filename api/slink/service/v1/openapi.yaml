@@ -212,8 +212,7 @@ components:
             type: object
             properties:
                 count:
-                    type: integer
-                    format: uint64
+                    type: string
         CreateShortLinkReply:
             type: object
             properties:

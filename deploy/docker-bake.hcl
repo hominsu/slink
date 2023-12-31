@@ -16,11 +16,12 @@ variable "VERSION" {
 
 group "default" {
   targets = [
-    "slink-service",
+    "slink-backend",
+    "slink-frontend",
   ]
 }
 
-target "slink-service" {
+target "slink-backend" {
   context    = "."
   dockerfile = "app/slink/service/Dockerfile"
   args       = {
@@ -30,8 +31,26 @@ target "slink-service" {
     APP_RELATIVE_PATH = "slink/service"
   }
   tags = [
-    notequal("", VERSION) ? "${REPO}/slink:${VERSION}" : "",
-    "${REPO}/slink:latest",
+    notequal("", VERSION) ? "${REPO}/slink:backend-${VERSION}" : "",
+    "${REPO}/slink:backend",
+  ]
+  platforms = ["linux/amd64", "linux/arm64"]
+}
+
+target "slink-frontend" {
+  context    = "."
+  dockerfile = "web/Dockerfile"
+  args = {
+    AUTHOR_NAME       = "${AUTHOR_NAME}"
+    AUTHOR_EMAIL      = "${AUTHOR_EMAIL}"
+    VERSION           = "$(VERSION)"
+  }
+  secret = [
+    "type=env,id=NEXT_PUBLIC_REDIRECT_URL",
+  ]
+  tags = [
+    notequal("", VERSION) ? "${REPO}/slink:frontend-${VERSION}" : "",
+    "${REPO}/slink:frontend",
   ]
   platforms = ["linux/amd64", "linux/arm64"]
 }

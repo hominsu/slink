@@ -1,9 +1,25 @@
 version: '3.4'
 
 services:
-  slink:
-    image: hominsu/slink:latest
-    container_name: slink
+  slink-frontend:
+    image: hominsu/slink:frontend
+    container_name: slink-frontend
+    restart: always
+    environment:
+      TZ: "Asia/Shanghai"
+      NEXT_GRPC_ENDPOINT: "http://slink-backend:9000"
+    ports:
+      - "3000:3000"
+    networks:
+      net:
+        aliases:
+          - slink-frontend
+
+  slink-backend:
+    image: hominsu/slink:backend
+    container_name: slink-backend
+    depends_on:
+      - slink-frontend
     restart: always
     environment:
       TZ: "Asia/Shanghai"
@@ -14,7 +30,7 @@ services:
     networks:
       net:
         aliases:
-          - slink
+          - slink-backend
 
 networks:
   net:
