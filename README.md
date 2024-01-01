@@ -7,7 +7,7 @@
 <a href="https://github.com/hominsu/slink/stargazers"><img src="https://img.shields.io/github/stars/hominsu/slink.svg?style=for-the-badge" alt="Stargazers"></a>
 <a href="https://github.com/hominsu/slink/issues"><img src="https://img.shields.io/github/issues/hominsu/slink.svg?style=for-the-badge" alt="Issues"></a>
 <a href="https://github.com/hominsu/slink/blob/master/LICENSE"><img src="https://img.shields.io/github/license/hominsu/slink.svg?style=for-the-badge" alt="License"></a>
-<a href="https://github.com/hominsu/slink/actions/workflows/docker-publish.yml"><img src="https://img.shields.io/github/actions/workflow/status/hominsu/slink/go.yml?branch=main&style=for-the-badge" alt="Deploy"></a>
+<a href="https://github.com/hominsu/slink/actions/workflows/docker-deploy.yml"><img src="https://img.shields.io/github/actions/workflow/status/hominsu/slink/docker-deploy.yml?branch=main&style=for-the-badge" alt="Deploy"></a>
 </p>
 
 <!-- PROJECT LOGO -->
