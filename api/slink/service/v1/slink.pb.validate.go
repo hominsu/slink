@@ -78,6 +78,48 @@ func (m *CreateShortLinkRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.GetExpireAt() == nil {
+		err := CreateShortLinkRequestValidationError{
+			field:  "ExpireAt",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if t := m.GetExpireAt(); t != nil {
+		ts, err := t.AsTime(), t.CheckValid()
+		if err != nil {
+			err = CreateShortLinkRequestValidationError{
+				field:  "ExpireAt",
+				reason: "value is not a valid timestamp",
+				cause:  err,
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+
+			now := time.Now()
+			within := time.Duration(2678400*time.Second + 0*time.Nanosecond)
+
+			if ts.Sub(now) <= 0 || ts.Sub(now.Add(within)) > 0 {
+				err := CreateShortLinkRequestValidationError{
+					field:  "ExpireAt",
+					reason: "value must be greater than now within 744h0m0s",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+	}
+
 	if len(errors) > 0 {
 		return CreateShortLinkRequestMultiError(errors)
 	}
@@ -181,6 +223,35 @@ func (m *CreateShortLinkReply) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for Key
+
+	if all {
+		switch v := interface{}(m.GetExpireAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateShortLinkReplyValidationError{
+					field:  "ExpireAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateShortLinkReplyValidationError{
+					field:  "ExpireAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetExpireAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateShortLinkReplyValidationError{
+				field:  "ExpireAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return CreateShortLinkReplyMultiError(errors)

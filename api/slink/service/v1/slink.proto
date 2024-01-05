@@ -3,6 +3,7 @@ syntax = "proto3";
 package slink.service.v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 import "validate/validate.proto";
 
 option go_package = "github.com/hominsu/slink/api/slink/service/v1;v1";
@@ -19,8 +20,14 @@ service ShortLinkService {
 
 message CreateShortLinkRequest {
   string link = 1 [(validate.rules).string.uri = true];
+  google.protobuf.Timestamp expire_at = 2 [(validate.rules).timestamp = {
+    required: true,
+    gt_now: true,
+    within: {seconds: 2678400},
+  }];
 }
 
 message CreateShortLinkReply {
   string key = 1;
+  google.protobuf.Timestamp expire_at = 2;
 }
