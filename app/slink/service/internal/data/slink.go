@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -55,6 +56,36 @@ func (r *shortLinkRepo) Create(ctx context.Context, sl *biz.ShortLink) (*biz.Sho
 	case ent.IsConstraintError(err):
 		return nil, v1.ErrorConflict("invalid argument: %v", err)
 	default:
+		return nil, v1.ErrorUnknown("unknown error: %v", err)
+	}
+}
+
+func (r *shortLinkRepo) Upsert(ctx context.Context, sl *biz.ShortLink) (*biz.ShortLink, error) {
+	tx, err := r.data.db.Tx(ctx)
+	if err != nil {
+		return nil, v1.ErrorInternal("create transactional client error: %v", err)
+	}
+	defer func() {
+		if v := recover(); v != nil {
+			if rErr := tx.Rollback(); rErr != nil {
+				r.log.Warnf("rollback failed, err: %v", rErr)
+			}
+			panic(v)
+		}
+	}()
+
+	err = r.createBuilder(sl).OnConflict().UpdateExpireAt().Exec(ctx)
+	switch {
+	case err == nil:
+		if cErr := tx.Commit(); cErr != nil {
+			return nil, v1.ErrorInternal("failed commits the transaction, err: %v", cErr)
+		}
+		return r.GetByKey(ctx, sl.Key)
+	default:
+		if rErr := tx.Rollback(); rErr != nil {
+			return nil, v1.ErrorInternal("rollback failed, err: %v",
+				fmt.Errorf("%w: rolling back transaction: %v", err, rErr))
+		}
 		return nil, v1.ErrorUnknown("unknown error: %v", err)
 	}
 }
@@ -194,6 +225,7 @@ func (r *shortLinkRepo) createBuilder(s *biz.ShortLink) *ent.ShortLinkCreate {
 	m := r.data.db.ShortLink.Create()
 	m.SetKey(s.Key)
 	m.SetLink(s.Link)
+	m.SetExpireAt(s.ExpireAt)
 	return m
 }
 
@@ -204,8 +236,9 @@ func (r *shortLinkRepo) cacheKey(unique string, a ...string) string {
 
 func toShortLink(e *ent.ShortLink) (*biz.ShortLink, error) {
 	s := &biz.ShortLink{
-		Key:  e.Key,
-		Link: e.Link,
+		Key:      e.Key,
+		Link:     e.Link,
+		ExpireAt: e.ExpireAt,
 	}
 	return s, nil
 }

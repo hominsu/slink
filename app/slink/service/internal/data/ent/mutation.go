@@ -37,6 +37,7 @@ type ShortLinkMutation struct {
 	updated_at    *time.Time
 	key           *string
 	link          *string
+	expire_at     *time.Time
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*ShortLink, error)
@@ -285,6 +286,42 @@ func (m *ShortLinkMutation) ResetLink() {
 	m.link = nil
 }
 
+// SetExpireAt sets the "expire_at" field.
+func (m *ShortLinkMutation) SetExpireAt(t time.Time) {
+	m.expire_at = &t
+}
+
+// ExpireAt returns the value of the "expire_at" field in the mutation.
+func (m *ShortLinkMutation) ExpireAt() (r time.Time, exists bool) {
+	v := m.expire_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExpireAt returns the old "expire_at" field's value of the ShortLink entity.
+// If the ShortLink object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ShortLinkMutation) OldExpireAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExpireAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExpireAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExpireAt: %w", err)
+	}
+	return oldValue.ExpireAt, nil
+}
+
+// ResetExpireAt resets all changes to the "expire_at" field.
+func (m *ShortLinkMutation) ResetExpireAt() {
+	m.expire_at = nil
+}
+
 // Where appends a list predicates to the ShortLinkMutation builder.
 func (m *ShortLinkMutation) Where(ps ...predicate.ShortLink) {
 	m.predicates = append(m.predicates, ps...)
@@ -319,7 +356,7 @@ func (m *ShortLinkMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ShortLinkMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 5)
 	if m.created_at != nil {
 		fields = append(fields, shortlink.FieldCreatedAt)
 	}
@@ -331,6 +368,9 @@ func (m *ShortLinkMutation) Fields() []string {
 	}
 	if m.link != nil {
 		fields = append(fields, shortlink.FieldLink)
+	}
+	if m.expire_at != nil {
+		fields = append(fields, shortlink.FieldExpireAt)
 	}
 	return fields
 }
@@ -348,6 +388,8 @@ func (m *ShortLinkMutation) Field(name string) (ent.Value, bool) {
 		return m.Key()
 	case shortlink.FieldLink:
 		return m.Link()
+	case shortlink.FieldExpireAt:
+		return m.ExpireAt()
 	}
 	return nil, false
 }
@@ -365,6 +407,8 @@ func (m *ShortLinkMutation) OldField(ctx context.Context, name string) (ent.Valu
 		return m.OldKey(ctx)
 	case shortlink.FieldLink:
 		return m.OldLink(ctx)
+	case shortlink.FieldExpireAt:
+		return m.OldExpireAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown ShortLink field %s", name)
 }
@@ -401,6 +445,13 @@ func (m *ShortLinkMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetLink(v)
+		return nil
+	case shortlink.FieldExpireAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExpireAt(v)
 		return nil
 	}
 	return fmt.Errorf("unknown ShortLink field %s", name)
@@ -462,6 +513,9 @@ func (m *ShortLinkMutation) ResetField(name string) error {
 		return nil
 	case shortlink.FieldLink:
 		m.ResetLink()
+		return nil
+	case shortlink.FieldExpireAt:
+		m.ResetExpireAt()
 		return nil
 	}
 	return fmt.Errorf("unknown ShortLink field %s", name)

@@ -3,6 +3,7 @@ package biz
 import (
 	"context"
 	"strconv"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 	cuckoo "github.com/seiflotfy/cuckoofilter"
@@ -14,8 +15,9 @@ import (
 )
 
 type ShortLink struct {
-	Key  string `json:"key,omitempty"`
-	Link string `json:"link,omitempty"`
+	Key      string    `json:"key,omitempty"`
+	Link     string    `json:"link,omitempty"`
+	ExpireAt time.Time `json:"expire_at,omitempty"`
 }
 
 type ShortLinkPage struct {
@@ -25,6 +27,7 @@ type ShortLinkPage struct {
 
 type ShortLinkRepo interface {
 	Create(ctx context.Context, sl *ShortLink) (*ShortLink, error)
+	Upsert(ctx context.Context, sl *ShortLink) (*ShortLink, error)
 	GetByKey(ctx context.Context, key string) (*ShortLink, error)
 	GetByLink(ctx context.Context, link string) (*ShortLink, error)
 	DeleteByKey(ctx context.Context, key string) error
@@ -54,22 +57,49 @@ func NewShortLinkRepoUsecase(sr ShortLinkRepo, filter *cuckoo.Filter, conf *conf
 	}
 }
 
-func (uc *ShortLinkRepoUsecase) Create(ctx context.Context, link string) (*ShortLink, error) {
+func (uc *ShortLinkRepoUsecase) Create(ctx context.Context, sl *ShortLink) (*ShortLink, error) {
 	var key string
-	fLink := link
+	fLink := sl.Link
 	for i := 0; i < uc.retry; i++ {
 		key = strconv.FormatUint(uint64(murmur3.Sum32([]byte(fLink))), 36)
 		if !uc.filter.Lookup([]byte(key)) {
 			s, err := uc.sr.Create(ctx, &ShortLink{
-				Key:  key,
-				Link: link,
+				Key:      key,
+				Link:     sl.Link,
+				ExpireAt: sl.ExpireAt,
 			})
 			switch {
 			case err == nil:
 				uc.filter.InsertUnique([]byte(key))
 				return s, nil
 			case v1.IsConflict(err):
-				return uc.sr.GetByLink(ctx, link)
+				return uc.sr.GetByLink(ctx, sl.Link)
+			default:
+				return nil, err
+			}
+		}
+		fLink += utils.RandString(10, utils.AllCharSet)
+	}
+	return nil, v1.ErrorConflict("can not short link")
+}
+
+func (uc *ShortLinkRepoUsecase) Upsert(ctx context.Context, sl *ShortLink) (*ShortLink, error) {
+	var key string
+	fLink := sl.Link
+	for i := 0; i < uc.retry; i++ {
+		key = strconv.FormatUint(uint64(murmur3.Sum32([]byte(fLink))), 36)
+		if !uc.filter.Lookup([]byte(key)) {
+			s, err := uc.sr.Upsert(ctx, &ShortLink{
+				Key:      key,
+				Link:     sl.Link,
+				ExpireAt: sl.ExpireAt,
+			})
+			switch {
+			case err == nil:
+				uc.filter.InsertUnique([]byte(key))
+				return s, nil
+			case v1.IsConflict(err):
+				return uc.sr.GetByLink(ctx, sl.Link)
 			default:
 				return nil, err
 			}

@@ -21,6 +21,8 @@ const (
 	FieldKey = "key"
 	// FieldLink holds the string denoting the link field in the database.
 	FieldLink = "link"
+	// FieldExpireAt holds the string denoting the expire_at field in the database.
+	FieldExpireAt = "expire_at"
 	// Table holds the table name of the shortlink in the database.
 	Table = "short_links"
 )
@@ -32,6 +34,7 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldKey,
 	FieldLink,
+	FieldExpireAt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -51,6 +54,10 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultExpireAt holds the default value on creation for the "expire_at" field.
+	DefaultExpireAt func() time.Time
+	// UpdateDefaultExpireAt holds the default value on update for the "expire_at" field.
+	UpdateDefaultExpireAt func() time.Time
 )
 
 // OrderOption defines the ordering options for the ShortLink queries.
@@ -79,4 +86,9 @@ func ByKey(opts ...sql.OrderTermOption) OrderOption {
 // ByLink orders the results by the link field.
 func ByLink(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLink, opts...).ToFunc()
+}
+
+// ByExpireAt orders the results by the expire_at field.
+func ByExpireAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldExpireAt, opts...).ToFunc()
 }

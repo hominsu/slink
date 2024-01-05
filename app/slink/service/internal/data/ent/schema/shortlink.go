@@ -1,7 +1,10 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 )
@@ -18,6 +21,12 @@ func (ShortLink) Fields() []ent.Field {
 			Unique(),
 		field.String("link").
 			Unique(),
+		field.Time("expire_at").
+			Default(time.Now).
+			UpdateDefault(time.Now).
+			SchemaType(map[string]string{
+				dialect.MySQL: "datetime",
+			}),
 	}
 }
 

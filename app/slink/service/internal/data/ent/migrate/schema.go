@@ -15,6 +15,7 @@ var (
 		{Name: "updated_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "key", Type: field.TypeString, Unique: true},
 		{Name: "link", Type: field.TypeString, Unique: true},
+		{Name: "expire_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 	}
 	// ShortLinksTable holds the schema information for the "short_links" table.
 	ShortLinksTable = &schema.Table{

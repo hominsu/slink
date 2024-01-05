@@ -30,4 +30,10 @@ func init() {
 	shortlink.DefaultUpdatedAt = shortlinkDescUpdatedAt.Default.(func() time.Time)
 	// shortlink.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	shortlink.UpdateDefaultUpdatedAt = shortlinkDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// shortlinkDescExpireAt is the schema descriptor for expire_at field.
+	shortlinkDescExpireAt := shortlinkFields[2].Descriptor()
+	// shortlink.DefaultExpireAt holds the default value on creation for the expire_at field.
+	shortlink.DefaultExpireAt = shortlinkDescExpireAt.Default.(func() time.Time)
+	// shortlink.UpdateDefaultExpireAt holds the default value on update for the expire_at field.
+	shortlink.UpdateDefaultExpireAt = shortlinkDescExpireAt.UpdateDefault.(func() time.Time)
 }

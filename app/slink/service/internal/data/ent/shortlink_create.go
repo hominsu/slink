@@ -62,6 +62,20 @@ func (slc *ShortLinkCreate) SetLink(s string) *ShortLinkCreate {
 	return slc
 }
 
+// SetExpireAt sets the "expire_at" field.
+func (slc *ShortLinkCreate) SetExpireAt(t time.Time) *ShortLinkCreate {
+	slc.mutation.SetExpireAt(t)
+	return slc
+}
+
+// SetNillableExpireAt sets the "expire_at" field if the given value is not nil.
+func (slc *ShortLinkCreate) SetNillableExpireAt(t *time.Time) *ShortLinkCreate {
+	if t != nil {
+		slc.SetExpireAt(*t)
+	}
+	return slc
+}
+
 // Mutation returns the ShortLinkMutation object of the builder.
 func (slc *ShortLinkCreate) Mutation() *ShortLinkMutation {
 	return slc.mutation
@@ -105,6 +119,10 @@ func (slc *ShortLinkCreate) defaults() {
 		v := shortlink.DefaultUpdatedAt()
 		slc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := slc.mutation.ExpireAt(); !ok {
+		v := shortlink.DefaultExpireAt()
+		slc.mutation.SetExpireAt(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -120,6 +138,9 @@ func (slc *ShortLinkCreate) check() error {
 	}
 	if _, ok := slc.mutation.Link(); !ok {
 		return &ValidationError{Name: "link", err: errors.New(`ent: missing required field "ShortLink.link"`)}
+	}
+	if _, ok := slc.mutation.ExpireAt(); !ok {
+		return &ValidationError{Name: "expire_at", err: errors.New(`ent: missing required field "ShortLink.expire_at"`)}
 	}
 	return nil
 }
@@ -163,6 +184,10 @@ func (slc *ShortLinkCreate) createSpec() (*ShortLink, *sqlgraph.CreateSpec) {
 	if value, ok := slc.mutation.Link(); ok {
 		_spec.SetField(shortlink.FieldLink, field.TypeString, value)
 		_node.Link = value
+	}
+	if value, ok := slc.mutation.ExpireAt(); ok {
+		_spec.SetField(shortlink.FieldExpireAt, field.TypeTime, value)
+		_node.ExpireAt = value
 	}
 	return _node, _spec
 }
@@ -252,6 +277,18 @@ func (u *ShortLinkUpsert) UpdateLink() *ShortLinkUpsert {
 	return u
 }
 
+// SetExpireAt sets the "expire_at" field.
+func (u *ShortLinkUpsert) SetExpireAt(v time.Time) *ShortLinkUpsert {
+	u.Set(shortlink.FieldExpireAt, v)
+	return u
+}
+
+// UpdateExpireAt sets the "expire_at" field to the value that was provided on create.
+func (u *ShortLinkUpsert) UpdateExpireAt() *ShortLinkUpsert {
+	u.SetExcluded(shortlink.FieldExpireAt)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create.
 // Using this option is equivalent to using:
 //
@@ -336,6 +373,20 @@ func (u *ShortLinkUpsertOne) SetLink(v string) *ShortLinkUpsertOne {
 func (u *ShortLinkUpsertOne) UpdateLink() *ShortLinkUpsertOne {
 	return u.Update(func(s *ShortLinkUpsert) {
 		s.UpdateLink()
+	})
+}
+
+// SetExpireAt sets the "expire_at" field.
+func (u *ShortLinkUpsertOne) SetExpireAt(v time.Time) *ShortLinkUpsertOne {
+	return u.Update(func(s *ShortLinkUpsert) {
+		s.SetExpireAt(v)
+	})
+}
+
+// UpdateExpireAt sets the "expire_at" field to the value that was provided on create.
+func (u *ShortLinkUpsertOne) UpdateExpireAt() *ShortLinkUpsertOne {
+	return u.Update(func(s *ShortLinkUpsert) {
+		s.UpdateExpireAt()
 	})
 }
 
@@ -589,6 +640,20 @@ func (u *ShortLinkUpsertBulk) SetLink(v string) *ShortLinkUpsertBulk {
 func (u *ShortLinkUpsertBulk) UpdateLink() *ShortLinkUpsertBulk {
 	return u.Update(func(s *ShortLinkUpsert) {
 		s.UpdateLink()
+	})
+}
+
+// SetExpireAt sets the "expire_at" field.
+func (u *ShortLinkUpsertBulk) SetExpireAt(v time.Time) *ShortLinkUpsertBulk {
+	return u.Update(func(s *ShortLinkUpsert) {
+		s.SetExpireAt(v)
+	})
+}
+
+// UpdateExpireAt sets the "expire_at" field to the value that was provided on create.
+func (u *ShortLinkUpsertBulk) UpdateExpireAt() *ShortLinkUpsertBulk {
+	return u.Update(func(s *ShortLinkUpsert) {
+		s.UpdateExpireAt()
 	})
 }
 

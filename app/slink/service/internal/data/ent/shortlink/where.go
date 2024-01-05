@@ -74,6 +74,11 @@ func Link(v string) predicate.ShortLink {
 	return predicate.ShortLink(sql.FieldEQ(FieldLink, v))
 }
 
+// ExpireAt applies equality check predicate on the "expire_at" field. It's identical to ExpireAtEQ.
+func ExpireAt(v time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldEQ(FieldExpireAt, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.ShortLink {
 	return predicate.ShortLink(sql.FieldEQ(FieldCreatedAt, v))
@@ -282,6 +287,46 @@ func LinkEqualFold(v string) predicate.ShortLink {
 // LinkContainsFold applies the ContainsFold predicate on the "link" field.
 func LinkContainsFold(v string) predicate.ShortLink {
 	return predicate.ShortLink(sql.FieldContainsFold(FieldLink, v))
+}
+
+// ExpireAtEQ applies the EQ predicate on the "expire_at" field.
+func ExpireAtEQ(v time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldEQ(FieldExpireAt, v))
+}
+
+// ExpireAtNEQ applies the NEQ predicate on the "expire_at" field.
+func ExpireAtNEQ(v time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldNEQ(FieldExpireAt, v))
+}
+
+// ExpireAtIn applies the In predicate on the "expire_at" field.
+func ExpireAtIn(vs ...time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldIn(FieldExpireAt, vs...))
+}
+
+// ExpireAtNotIn applies the NotIn predicate on the "expire_at" field.
+func ExpireAtNotIn(vs ...time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldNotIn(FieldExpireAt, vs...))
+}
+
+// ExpireAtGT applies the GT predicate on the "expire_at" field.
+func ExpireAtGT(v time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldGT(FieldExpireAt, v))
+}
+
+// ExpireAtGTE applies the GTE predicate on the "expire_at" field.
+func ExpireAtGTE(v time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldGTE(FieldExpireAt, v))
+}
+
+// ExpireAtLT applies the LT predicate on the "expire_at" field.
+func ExpireAtLT(v time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldLT(FieldExpireAt, v))
+}
+
+// ExpireAtLTE applies the LTE predicate on the "expire_at" field.
+func ExpireAtLTE(v time.Time) predicate.ShortLink {
+	return predicate.ShortLink(sql.FieldLTE(FieldExpireAt, v))
 }
 
 // And groups predicates with the AND operator between them.

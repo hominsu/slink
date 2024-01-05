@@ -63,6 +63,12 @@ func (slu *ShortLinkUpdate) SetNillableLink(s *string) *ShortLinkUpdate {
 	return slu
 }
 
+// SetExpireAt sets the "expire_at" field.
+func (slu *ShortLinkUpdate) SetExpireAt(t time.Time) *ShortLinkUpdate {
+	slu.mutation.SetExpireAt(t)
+	return slu
+}
+
 // Mutation returns the ShortLinkMutation object of the builder.
 func (slu *ShortLinkUpdate) Mutation() *ShortLinkMutation {
 	return slu.mutation
@@ -102,6 +108,10 @@ func (slu *ShortLinkUpdate) defaults() {
 		v := shortlink.UpdateDefaultUpdatedAt()
 		slu.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := slu.mutation.ExpireAt(); !ok {
+		v := shortlink.UpdateDefaultExpireAt()
+		slu.mutation.SetExpireAt(v)
+	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
@@ -127,6 +137,9 @@ func (slu *ShortLinkUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := slu.mutation.Link(); ok {
 		_spec.SetField(shortlink.FieldLink, field.TypeString, value)
+	}
+	if value, ok := slu.mutation.ExpireAt(); ok {
+		_spec.SetField(shortlink.FieldExpireAt, field.TypeTime, value)
 	}
 	_spec.AddModifiers(slu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, slu.driver, _spec); err != nil {
@@ -184,6 +197,12 @@ func (sluo *ShortLinkUpdateOne) SetNillableLink(s *string) *ShortLinkUpdateOne {
 	return sluo
 }
 
+// SetExpireAt sets the "expire_at" field.
+func (sluo *ShortLinkUpdateOne) SetExpireAt(t time.Time) *ShortLinkUpdateOne {
+	sluo.mutation.SetExpireAt(t)
+	return sluo
+}
+
 // Mutation returns the ShortLinkMutation object of the builder.
 func (sluo *ShortLinkUpdateOne) Mutation() *ShortLinkMutation {
 	return sluo.mutation
@@ -236,6 +255,10 @@ func (sluo *ShortLinkUpdateOne) defaults() {
 		v := shortlink.UpdateDefaultUpdatedAt()
 		sluo.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := sluo.mutation.ExpireAt(); !ok {
+		v := shortlink.UpdateDefaultExpireAt()
+		sluo.mutation.SetExpireAt(v)
+	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
@@ -278,6 +301,9 @@ func (sluo *ShortLinkUpdateOne) sqlSave(ctx context.Context) (_node *ShortLink, 
 	}
 	if value, ok := sluo.mutation.Link(); ok {
 		_spec.SetField(shortlink.FieldLink, field.TypeString, value)
+	}
+	if value, ok := sluo.mutation.ExpireAt(); ok {
+		_spec.SetField(shortlink.FieldExpireAt, field.TypeTime, value)
 	}
 	_spec.AddModifiers(sluo.modifiers...)
 	_node = &ShortLink{config: sluo.config}

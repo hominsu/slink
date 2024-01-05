@@ -24,7 +24,9 @@ type ShortLink struct {
 	// Key holds the value of the "key" field.
 	Key string `json:"key,omitempty"`
 	// Link holds the value of the "link" field.
-	Link         string `json:"link,omitempty"`
+	Link string `json:"link,omitempty"`
+	// ExpireAt holds the value of the "expire_at" field.
+	ExpireAt     time.Time `json:"expire_at,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -37,7 +39,7 @@ func (*ShortLink) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case shortlink.FieldKey, shortlink.FieldLink:
 			values[i] = new(sql.NullString)
-		case shortlink.FieldCreatedAt, shortlink.FieldUpdatedAt:
+		case shortlink.FieldCreatedAt, shortlink.FieldUpdatedAt, shortlink.FieldExpireAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -83,6 +85,12 @@ func (sl *ShortLink) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field link", values[i])
 			} else if value.Valid {
 				sl.Link = value.String
+			}
+		case shortlink.FieldExpireAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field expire_at", values[i])
+			} else if value.Valid {
+				sl.ExpireAt = value.Time
 			}
 		default:
 			sl.selectValues.Set(columns[i], values[i])
@@ -131,6 +139,9 @@ func (sl *ShortLink) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("link=")
 	builder.WriteString(sl.Link)
+	builder.WriteString(", ")
+	builder.WriteString("expire_at=")
+	builder.WriteString(sl.ExpireAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

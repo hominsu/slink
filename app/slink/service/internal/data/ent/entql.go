@@ -29,6 +29,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			shortlink.FieldUpdatedAt: {Type: field.TypeTime, Column: shortlink.FieldUpdatedAt},
 			shortlink.FieldKey:       {Type: field.TypeString, Column: shortlink.FieldKey},
 			shortlink.FieldLink:      {Type: field.TypeString, Column: shortlink.FieldLink},
+			shortlink.FieldExpireAt:  {Type: field.TypeTime, Column: shortlink.FieldExpireAt},
 		},
 	}
 	return graph
@@ -98,4 +99,9 @@ func (f *ShortLinkFilter) WhereKey(p entql.StringP) {
 // WhereLink applies the entql string predicate on the link field.
 func (f *ShortLinkFilter) WhereLink(p entql.StringP) {
 	f.Where(p.Field(shortlink.FieldLink))
+}
+
+// WhereExpireAt applies the entql time.Time predicate on the expire_at field.
+func (f *ShortLinkFilter) WhereExpireAt(p entql.TimeP) {
+	f.Where(p.Field(shortlink.FieldExpireAt))
 }
