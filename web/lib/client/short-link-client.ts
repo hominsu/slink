@@ -3,9 +3,10 @@ import { createGrpcTransport } from '@connectrpc/connect-node'
 
 import { siteConfig } from '@/config/site'
 import { ShortLinkService } from '@/lib/api/slink/service/v1/slink_connect'
+import { CreateShortLinkReply, CreateShortLinkRequest } from '@/lib/api/slink/service/v1/slink_pb'
 
 export interface IShortLinkClient {
-  createShortLink(link: string): Promise<string>
+  createShortLink(req: CreateShortLinkRequest): Promise<CreateShortLinkReply>
 }
 
 export class ShortLinkClient implements IShortLinkClient {
@@ -22,10 +23,9 @@ export class ShortLinkClient implements IShortLinkClient {
     )
   }
 
-  async createShortLink(link: string): Promise<string> {
+  async createShortLink(req: CreateShortLinkRequest): Promise<CreateShortLinkReply> {
     try {
-      const response = await this.client.createShortLink({ link })
-      return response.key
+      return await this.client.createShortLink(req)
     } catch (err) {
       let errorMessage = 'Error creating short link'
       if (err instanceof ConnectError) {

@@ -12,9 +12,7 @@ import {
   PageHeaderHeading,
 } from '@/components/page-header'
 
-import { LinkShorter } from './link-shorter'
-
-export default async function IndexPage() {
+export default function IndexPage() {
   return (
     <div className="container relative">
       <PageHeader>
@@ -25,6 +23,9 @@ export default async function IndexPage() {
           manageable links easily. Ideal for sharing and tracking.
         </PageHeaderDescription>
         <PageActions>
+          <Link href="/slink" className={cn(buttonVariants())}>
+            Get Started
+          </Link>
           <Link
             target="_blank"
             rel="noreferrer"
@@ -36,11 +37,6 @@ export default async function IndexPage() {
           </Link>
         </PageActions>
       </PageHeader>
-      <div className="flex items-center justify-center">
-        <div className="w-full max-w-md p-4">
-          <LinkShorter className="rounded-lg border shadow-lg" />
-        </div>
-      </div>
     </div>
   )
 }

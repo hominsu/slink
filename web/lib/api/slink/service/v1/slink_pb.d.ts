@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
@@ -14,6 +14,11 @@ export declare class CreateShortLinkRequest extends Message<CreateShortLinkReque
    * @generated from field: string link = 1;
    */
   link: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp expire_at = 2;
+   */
+  expireAt?: Timestamp;
 
   constructor(data?: PartialMessage<CreateShortLinkRequest>);
 
@@ -38,6 +43,11 @@ export declare class CreateShortLinkReply extends Message<CreateShortLinkReply> 
    * @generated from field: string key = 1;
    */
   key: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp expire_at = 2;
+   */
+  expireAt?: Timestamp;
 
   constructor(data?: PartialMessage<CreateShortLinkReply>);
 

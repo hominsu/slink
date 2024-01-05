@@ -11,8 +11,7 @@ export default function (router: ConnectRouter) {
     ShortLinkService.methods.createShortLink,
     async (req: CreateShortLinkRequest) => {
       try {
-        const key = await shortLinkClient.createShortLink(req.link)
-        return { key }
+        return await shortLinkClient.createShortLink(req)
       } catch (error) {
         console.error(error)
         throw error

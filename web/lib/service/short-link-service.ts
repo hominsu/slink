@@ -1,10 +1,13 @@
+import { Timestamp } from '@bufbuild/protobuf'
 import { ConnectError, createPromiseClient } from '@connectrpc/connect'
 import { createConnectTransport } from '@connectrpc/connect-web'
 
 import { ShortLinkService as ConnectShortLinkService } from '@/lib/api/slink/service/v1/slink_connect'
+import { CreateShortLinkReply } from '@/lib/api/slink/service/v1/slink_pb'
+import { InputForm } from '@/lib/scheme/input-form'
 
 export interface IShortLinkService {
-  createShortLink(link: string): Promise<string>
+  createShortLink(data: InputForm): Promise<CreateShortLinkReply>
 }
 
 export class ShortLinkService implements IShortLinkService {
@@ -19,10 +22,12 @@ export class ShortLinkService implements IShortLinkService {
     )
   }
 
-  async createShortLink(link: string): Promise<string> {
+  async createShortLink(data: InputForm): Promise<CreateShortLinkReply> {
     try {
-      const response = await this.client.createShortLink({ link })
-      return response.key
+      return await this.client.createShortLink({
+        link: data.link,
+        expireAt: Timestamp.fromDate(data.expireAt),
+      })
     } catch (err) {
       let errorMessage = 'Error creating short link'
       if (err instanceof ConnectError) {

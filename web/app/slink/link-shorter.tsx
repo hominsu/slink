@@ -3,6 +3,7 @@
 import React, { FC, useState } from 'react'
 
 import { siteConfig } from '@/config/site'
+import { InputForm } from '@/lib/scheme/input-form'
 import { shortLinkService } from '@/lib/service/short-link-service'
 import { CreateFullUrl } from '@/lib/utils'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,15 +15,16 @@ interface LinkShorterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const LinkShorter: FC<LinkShorterProps> = ({ className, ...props }: LinkShorterProps) => {
   const [shortenedLink, setShortenedLink] = useState<string | null>(null)
+  const [expireAt, setExpireAt] = useState<Date>(new Date())
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const handleSubmit = async (inputLink: string, resetInput: () => void) => {
+  const handleSubmit = async (data: InputForm) => {
     try {
-      const key = await shortLinkService.createShortLink(inputLink)
-      const fullUrl = CreateFullUrl(key, siteConfig.site.redirectURL as string)
-      if (fullUrl) {
-        resetInput()
+      const response = await shortLinkService.createShortLink(data)
+      const fullUrl = CreateFullUrl(response.key, siteConfig.site.redirectURL as string)
+      if (fullUrl && response.expireAt) {
         setShortenedLink(fullUrl)
+        setExpireAt(response.expireAt.toDate())
         setErrorMessage(null)
       }
     } catch (error) {
@@ -34,7 +36,9 @@ export const LinkShorter: FC<LinkShorterProps> = ({ className, ...props }: LinkS
     <Card className={className} {...props}>
       <CardHeader>
         <CardTitle>Create Your Short Link</CardTitle>
-        <CardDescription>Enter a URL to generate a short and shareable link.</CardDescription>
+        <CardDescription>
+          Enter a URL to generate a short, shareable and controllable link.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ShortLinkForm onSubmit={handleSubmit} />
@@ -47,10 +51,7 @@ export const LinkShorter: FC<LinkShorterProps> = ({ className, ...props }: LinkS
         {shortenedLink && !errorMessage && (
           <>
             <Separator className="my-4" />
-            <div className="my-4 text-sm text-zinc-500 dark:text-zinc-400">
-              Your short link is ready, click the link below to copy 👏 !
-            </div>
-            <ShortLinkDisplay link={shortenedLink} />
+            <ShortLinkDisplay link={shortenedLink} expireAt={expireAt} />
           </>
         )}
       </CardContent>

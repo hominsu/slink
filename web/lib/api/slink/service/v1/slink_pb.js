@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3 } from "@bufbuild/protobuf";
+import { proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
  * @generated from message slink.service.v1.CreateShortLinkRequest
@@ -12,6 +12,7 @@ export const CreateShortLinkRequest = proto3.makeMessageType(
   "slink.service.v1.CreateShortLinkRequest",
   () => [
     { no: 1, name: "link", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "expire_at", kind: "message", T: Timestamp },
   ],
 );
 
@@ -22,6 +23,7 @@ export const CreateShortLinkReply = proto3.makeMessageType(
   "slink.service.v1.CreateShortLinkReply",
   () => [
     { no: 1, name: "key", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "expire_at", kind: "message", T: Timestamp },
   ],
 );
 
