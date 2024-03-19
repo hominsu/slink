@@ -45,7 +45,7 @@ export const ShortLinkForm: FC<ShortLinkFormProps> = ({ onSubmit }) => {
             <FormItem className="grid-2 grid">
               <FormLabel>URL</FormLabel>
               <FormControl>
-                <Input placeholder="https://www.hauhau.cn" {...field} />
+                <Input placeholder="https://homing.so" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: 'Homing So',
-      url: 'https://www.hauhau.cn',
+      url: 'https://homing.so',
     },
   ],
   creator: 'Homing So',

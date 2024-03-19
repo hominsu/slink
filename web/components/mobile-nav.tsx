@@ -60,8 +60,8 @@ export function MobileNav() {
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
             <MobileLink
-              key="https://www.hauhau.cn/about"
-              href="https://www.hauhau.cn/about"
+              key="https://homing.so/about"
+              href="https://homing.so/about"
               onOpenChange={setOpen}
             >
               Author

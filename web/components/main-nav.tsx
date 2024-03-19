@@ -14,7 +14,7 @@ export function MainNav() {
       </Link>
       <nav className="flex items-center gap-6 text-sm">
         <Link
-          href="https://www.hauhau.cn/about"
+          href="https://homing.so/about"
           className="text-foreground transition-colors hover:text-foreground/80"
         >
           Author
